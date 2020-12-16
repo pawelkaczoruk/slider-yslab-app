@@ -26,14 +26,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 
 .slider-button {
   height: 3.5em;
-  outline: none;
 
   &:disabled .icon {
-    @include svgStyle(var(--c-dark-gray), var(--c-darker-gray));
+    @include svgStyle(var(--c-gray), var(--c-dark-gray));
     transition: all 0.8s ease-in-out;
   }
   

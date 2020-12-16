@@ -4,6 +4,14 @@
   @if $r { border-radius: $r; }
 }
 
+@mixin flex($justify: false, $align: false, $direction: false, $display: flex) {
+  display: $display;
+
+  @if $justify { justify-content: $justify; }
+  @if $align { align-items: $align; }
+  @if $direction { flex-direction: $direction; }
+}
+
 @mixin position($position, $t: false, $r: false, $b: false, $l: false, $z: false) {
   position: $position;
 

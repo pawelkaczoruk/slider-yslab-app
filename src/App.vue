@@ -33,9 +33,56 @@
     />
   </div>
 
-  {{ images[activeSlideIndex].likes }}
-  <button @click="modifyLikes(images[activeSlideIndex], 1)">like</button>
-  <button @click="modifyLikes(images[activeSlideIndex], -1)">dislike</button>
+  <div class="action-menu">
+
+    <div class="action-buttons-container">
+      <button
+        class="action-button like-button"
+        @click="modifyLikes(images[activeSlideIndex], 1)"
+      >
+        <svg
+          class="icon"
+          viewBox="0 0 26 26"
+        >
+          <path
+            d="M9.5,22V15h-7a3,3,0,1,1,0-6h7V2a3,3,0,1,1,6,0V9h7a3,3,0,0,1,0,6h-7v7a3,3,0,1,1-6,0Z"
+            transform="translate(0.5 1)"
+          />
+        </svg>
+      </button>
+      <button
+        class="action-button unlike-button"
+        @click="modifyLikes(images[activeSlideIndex], -1)"
+      >
+        <svg
+          class="icon"
+          viewBox="0 0 26 6"
+        >
+          <path
+            d="M3,0A3,3,0,0,1,6,3V23a3,3,0,0,1-6,0V3A3,3,0,0,1,3,0Z"
+            transform="translate(26) rotate(90)"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <div class="likes-display">
+      <svg
+        class="icon"
+        :class="{ 'colored': images[activeSlideIndex].likes > 0 }"
+        viewBox="0 0 48 42"
+      >
+        <path
+          d="M23.074,72.654C9.535,60.859,0,54.612,0,44.675,0,37.16,5.381,31,12.75,31c5.114,0,8.908,3.126,11.25,7.561C26.342,34.127,30.136,31,35.25,31,42.62,31,48,37.161,48,44.675c0,9.936-9.522,16.174-23.074,27.979A1.411,1.411,0,0,1,23.074,72.654Z"
+          transform="translate(0 -31)"
+        />
+      </svg>
+      <span class="likes-counter">
+        {{ images[activeSlideIndex].likes }}
+      </span>
+    </div>
+
+  </div>
 
 </template>
 
@@ -46,7 +93,7 @@ import SliderButton from './components/SliderButton.vue'
 export default {
   name: 'App',
   components: {
-    SliderButton
+    SliderButton,
   },
   setup() {
     const getImagesFromLocalStorage = () => {
@@ -55,6 +102,12 @@ export default {
           filename: 'pug.jpg',
           alt: 'Pug covered in blanket',
           name: 'Pug',
+          likes: 0
+        },
+        {
+          filename: 'night.jpg',
+          alt: 'City night view',
+          name: 'Night in city',
           likes: 0
         },
         {
@@ -118,12 +171,11 @@ export default {
 @import '@/assets/styles/reset';
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: var(--c-background);
-  min-height: 100vh;
+  @include flex(center, center, column);
+  margin: 0 auto;
+  min-height: 100%;
   width: 100%;
+  max-width: 1600px;
 }
 
 .slider-container {
@@ -139,25 +191,95 @@ export default {
   &.next { right: 2%; }
 }
 
-.slider {
-  width: 100%;
+.action-menu {
+  @include flex();
+  height: 2.75em;
+  user-select: none;
+}
+
+.action-buttons-container {
+  @include rect(7.25em, 100%, 10px);
+  @include flex(space-between, center);
+  overflow: hidden;
+  background: linear-gradient(var(--c-gray) 12%, var(--c-background) 12% 88%, var(--c-gray) 88% 100%) ;
+}
+
+.action-button {
+  @include rect(3.5em, 100%);
+  @include flex(center, center);
+  background: var(--c-gray);
+
+  @include hover() {
+    &.like-button {
+      .icon { fill: var(--c-light-blue); }
+    }
+
+    &.unlike-button {
+      .icon { fill: var(--c-light-red); }
+    }
+  }
+
+  &:focus-visible {
+    &.like-button {
+      .icon { fill: var(--c-light-blue); }
+    }
+
+    &.unlike-button {
+      .icon { fill: var(--c-light-red); }
+    }
+  }
+
+  .icon {
+    @include rect(1.75em, 1.75em);
+    fill: var(--c-light-gray);
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+.likes-display {
   height: 100%;
+  @include flex(false, center);
+  color: var(--c-text);
+  margin-left: 3em;
+
+  .likes-counter {
+    margin-left: 0.25rem;
+    font-size: 2em;
+    font-weight: bold;
+  }
+
+  .icon {
+    height: 70%;
+    fill: var(--c-light-gray);
+    transition: all 0.4s ease;
+
+    &.colored { fill: var(--c-light-blue); }
+  }
+}
+
+.slider-container {
+  padding: 2em 0;
+}
+
+.slider {
+  @include rect(100%, 100%);
   overflow: hidden;
   position: relative;
+  user-select: none;
 }
 
 .slider-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex(center, center);
   height: 100%;
   width: 100%;
+  padding: 0 0.75em;
 }
 
 .slider-item-image {
   height: auto;
   max-height: 100%;
   max-width: 100%;
+  border-radius: 1.5em;
 }
 
 .slide-prev-enter-active,
