@@ -30,6 +30,8 @@ export default {
 
 .slider-button {
   height: 3.5em;
+  opacity: 0.8;
+  user-select: none;
 
   &:disabled .icon {
     @include svgStyle(var(--c-gray), var(--c-dark-gray));
@@ -52,6 +54,7 @@ export default {
 }
 
 .icon {
+  overflow: visible;
   height: 100%;
   @include svgStyle(var(--c-blue), var(--c-light-blue), 1px);
   transition: all 0.2s ease-in-out;
