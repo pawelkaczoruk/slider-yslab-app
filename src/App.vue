@@ -1,32 +1,37 @@
 <template>
-  <transition-group
-    class="slider"
-    tag="div"
-    :name="`slide-${slideAnimationDirection}`"
-    @before-enter="setAnimationPlayingState(true)"
-    @after-enter="setAnimationPlayingState(false)" 
-  >
-    <div
-      class="slider-item"
-      v-for="(image, i) in images"
-      :key="i"
-      v-show="i === activeSlideIndex"
+  <div class="slider-container">
+    <transition-group
+      class="slider"
+      tag="div"
+      :name="`slide-${slideAnimationDirection}`"
+      @before-enter="setAnimationPlayingState(true)"
+      @after-enter="setAnimationPlayingState(false)" 
     >
-      <img
-        class="slider-item-image"
-        :src="require(`${'./assets/images/' + image.filename}`)"
+      <div
+        class="slider-item"
+        v-for="(image, i) in images"
+        :key="i"
+        v-show="i === activeSlideIndex"
       >
-    </div>
-  </transition-group>
+        <img
+          class="slider-item-image"
+          :src="require(`${'./assets/images/' + image.filename}`)"
+        >
+      </div>
+    </transition-group>
 
-  <button
-    v-show="activeSlideIndex > 0"
-    @click="prev()"
-  >prev</button>
-  <button
-    v-show="activeSlideIndex < images.length - 1"
-    @click="next()"
-  >next</button>
+    <SliderButton
+      class="prev"
+      :disabled="activeSlideIndex === 0"
+      @click="prev()"
+    />
+    <SliderButton
+      class="next"
+      :disabled="activeSlideIndex === images.length - 1"
+      @click="next()"
+      flip-icon
+    />
+  </div>
 
   {{ images[activeSlideIndex].likes }}
   <button @click="modifyLikes(images[activeSlideIndex], 1)">like</button>
@@ -36,9 +41,13 @@
 
 <script>
 import { ref } from 'vue'
+import SliderButton from './components/SliderButton.vue'
 
 export default {
   name: 'App',
+  components: {
+    SliderButton
+  },
   setup() {
     const getImagesFromLocalStorage = () => {
       return JSON.parse(localStorage.getItem('images')) || [
@@ -105,54 +114,36 @@ export default {
 </script>
 
 <style lang="scss">
-// reset
-
-html { font-size: 16px; }
-
-body {
-  min-height: 100vh;
-  color: var(--c-text-primary);
-  background: var(--c-background);
-  font-family: Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  font-family: inherit;
-  font-size: 1em;
-  font-weight: normal;
-}
-
-ul,
-ol { list-style: none; }
-
-a { text-decoration: none; }
-
-// other
+@import '@/assets/styles/variables';
+@import '@/assets/styles/reset';
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  background: var(--c-background);
+  min-height: 100vh;
+  width: 100%;
+}
+
+.slider-container {
+  @include rect(100%, 80vh);
+  position: relative;
+}
+
+.slider-button {
+  @include position(absolute, 50%);
+  transform: translateY(-50%);
+
+  &.prev { left: 2%; }
+  &.next { right: 2%; }
 }
 
 .slider {
   width: 100%;
-  height: 80vh;
+  height: 100%;
   overflow: hidden;
   position: relative;
-  background: rgb(32, 32, 32);
 }
 
 .slider-item {
@@ -161,9 +152,6 @@ a { text-decoration: none; }
   align-items: center;
   height: 100%;
   width: 100%;
-  // background-position: center;
-  // background-repeat: no-repeat;
-  // background-size: cover;
 }
 
 .slider-item-image {

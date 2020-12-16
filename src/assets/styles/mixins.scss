@@ -1,0 +1,32 @@
+@mixin rect($w: false, $h: false, $r: false,) {
+  @if $w { width: $w; }
+  @if $h { height: $h; }
+  @if $r { border-radius: $r; }
+}
+
+@mixin position($position, $t: false, $r: false, $b: false, $l: false, $z: false) {
+  position: $position;
+
+  @if $t { top: $t; }
+  @if $r { right: $r; }
+  @if $b { bottom: $b; }
+  @if $l { left: $l; }
+  @if $z { z-index: $z; }
+}
+
+@mixin svgStyle($c-fill: false, $c-stroke: false, $w-stroke: false) {
+  @if $c-fill { fill: $c-fill; }
+  @if $c-stroke { stroke: $c-stroke; }
+  @if $w-stroke { stroke-width: $w-stroke; }
+}
+
+@mixin hover($duration: false) {
+  @media screen and (any-hover: hover) {
+    @if $duration { transition: all $duration ease-in-out; }
+
+    &:hover {
+      cursor: pointer;
+      @content;
+    }
+  }
+}
