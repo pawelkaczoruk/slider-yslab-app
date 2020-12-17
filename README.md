@@ -1,24 +1,24 @@
-# slider-yslab-app
+# Slider App
 
-## Project setup
-```
-npm install
-```
+Slider app created for recruitment process at YSLAB
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+[Live](https://friendly-saha-248265.netlify.app/)
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Tech stack:
+* Vue 3
+* SCSS
+* Local Storage
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Features:
+* Images slider
+* Reaction (up vote and down vote) animation
+* Reaction menu with counter
+* Images with reactions are saved to localStorage
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## How to run:
+    git clone https://github.com/pawelkaczoruk/slider-yslab-app.git && cd slider-yslab-app
+    npm install
+#####  Development build
+    npm run serve
+##### Production build
+    npm run build
