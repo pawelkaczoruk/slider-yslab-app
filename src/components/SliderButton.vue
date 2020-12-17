@@ -3,6 +3,7 @@
     class="slider-button"
     :disabled="disabled"
   >
+
     <svg
       class="icon"
       :class="{ flipped: flipIcon }"
@@ -13,6 +14,7 @@
         transform="translate(-1.657 -1.657)"
       />
     </svg>
+
   </button>
 </template>
 
@@ -54,14 +56,12 @@ export default {
 }
 
 .icon {
-  overflow: visible;
   height: 100%;
+  overflow: visible;
   @include svgStyle(var(--c-blue), var(--c-light-blue), 1px);
   transition: all 0.2s ease-in-out;
 
-  &.flipped {
-    transform: scaleX(-1);
-  }
+  &.flipped { transform: scaleX(-1); }
 }
 
 </style>
